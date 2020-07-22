@@ -19,3 +19,7 @@ func GetIp() ([]string, error) {
 	}
 	return ips, nil
 }
+
+func GetTest() string {
+	return "Test"
+}
