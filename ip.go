@@ -21,5 +21,5 @@ func GetIp() ([]string, error) {
 }
 
 func GetTest() string {
-	return "Test"
+	return "Test1"
 }
