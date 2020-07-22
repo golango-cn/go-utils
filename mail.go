@@ -32,6 +32,7 @@ type Mail struct {
 	Addr               string
 }
 
+// NewMail
 func NewMail() *Mail {
 
 	mail := &Mail{username: "zhangning@boe.com.cn", password: "Boe888888"}
