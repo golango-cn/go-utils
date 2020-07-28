@@ -58,9 +58,9 @@ func (f *fileData) initIPData() error {
 }
 
 // NewQQwry 新建 qqwry  类型
-func NewQQwry() QQwry {
+func NewQQwry(ipdata *fileData) QQwry {
 	return QQwry{
-		Data: &IPData,
+		Data: ipdata,
 	}
 }
 
