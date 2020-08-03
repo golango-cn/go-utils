@@ -1,7 +1,10 @@
 package go_utils
 
 import (
+	"bufio"
 	"bytes"
+	"io"
+	"os"
 	"sort"
 	"strings"
 )
@@ -119,4 +122,25 @@ func UnMarshal(name string) string {
 
 	s := strings.ToLower(buf.String())
 	return s
+}
+
+
+func ReadLine(fileName string, handler func(string)) error {
+	f, err := os.Open(fileName)
+	if err != nil {
+		return err
+	}
+	buf := bufio.NewReader(f)
+	for {
+		line, err := buf.ReadString('\n')
+		line = strings.TrimSpace(line)
+		handler(line)
+		if err != nil {
+			if err == io.EOF {
+				return nil
+			}
+			return err
+		}
+	}
+	return nil
 }
