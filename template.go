@@ -27,3 +27,26 @@ func ParseTemplate(name string, funcMap template.FuncMap, data interface{}, temp
 	return buf.String(), nil
 
 }
+
+
+// 转换模板
+func Parse(name string, funcMap template.FuncMap, data interface{}, text string) (string, error) {
+
+	if len(name) == 0 {
+		return "", errors.New("Name cannot be empty")
+	}
+	t := template.New(name)
+	if funcMap != nil {
+		t = t.Funcs(funcMap)
+	}
+	t, err := t.Parse(text)
+	if err != nil {
+		return "", err
+	}
+	buf := new(bytes.Buffer)
+	if err = t.Execute(buf, data); err != nil {
+		return "", err
+	}
+	return buf.String(), nil
+
+}
