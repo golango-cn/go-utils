@@ -12,11 +12,11 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-type baseController struct {
+type GinBaseController struct {
 }
 
 // 绑定模型获取验证错误的方法
-func (c *baseController) GetEventError(ctx *gin.Context, errs validator.ValidationErrors) string {
+func (c *GinBaseController) GetEventError(ctx *gin.Context, errs validator.ValidationErrors) string {
 
 	for _, e := range errs {
 		ns := e.Namespace()
@@ -32,7 +32,7 @@ func (c *baseController) GetEventError(ctx *gin.Context, errs validator.Validati
 }
 
 // 获取错误信息
-func (c *baseController) GetError(st interface{}, errs validator.ValidationErrors) string {
+func (c *GinBaseController) GetError(st interface{}, errs validator.ValidationErrors) string {
 	for _, e := range errs {
 		field, _ := reflect.TypeOf(st).Elem().FieldByName(e.Field())
 		error := field.Tag.Get("error")
