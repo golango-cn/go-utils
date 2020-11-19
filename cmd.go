@@ -19,7 +19,7 @@ func ExecCommand(shell string, writers ...io.Writer) error {
 		return fmt.Errorf("执行sh出错 %s", err)
 	}
 
-	cmd.Start()
+	_ = cmd.Start()
 	//创建一个流来读取管道内内容，这里逻辑是通过一行一行的读取的
 	reader := bufio.NewReader(stdout)
 

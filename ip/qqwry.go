@@ -176,7 +176,7 @@ func (q *QQwry) searchIndex(ip uint32) uint32 {
 	start := binary.LittleEndian.Uint32(header[:4])
 	end := binary.LittleEndian.Uint32(header[4:])
 
-	buf := make([]byte, IndexLen)
+	var buf []byte
 	mid := uint32(0)
 	_ip := uint32(0)
 

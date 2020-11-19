@@ -142,5 +142,4 @@ func ReadLine(fileName string, handler func(string)) error {
 			return err
 		}
 	}
-	return nil
 }
