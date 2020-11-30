@@ -275,8 +275,9 @@ func ArrayToString(arrays []string) string {
 	return strings.Join(arrays, "")
 }
 
+var r = regexp.MustCompile(`[a-zA-Z0-9+/]{200,}`)
+
 // 移除base64编码
 func RemoveBase64(str string) string {
-	r := regexp.MustCompile(`[a-zA-Z0-9+/]{200,}`)
 	return r.ReplaceAllString(str, "")
 }
