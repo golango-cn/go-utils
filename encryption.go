@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
+	"encoding/base64"
+	"encoding/json"
 )
 
 func PKCS7Padding(ciphertext []byte, blockSize int) []byte {
@@ -44,4 +46,49 @@ func AesDecrypt(crypted, key []byte) ([]byte, error) {
 	blockMode.CryptBlocks(origData, crypted)
 	origData = PKCS7UnPadding(origData)
 	return origData, nil
+}
+
+// 加解密算法
+type Aes struct {
+	AekKey string                 `json:"-"`
+	Value  map[string]interface{} `json:"value"`
+}
+
+// 解码
+func (a *Aes) Decode(data string) error {
+
+	decodeString, _ := base64.StdEncoding.DecodeString(data)
+
+	// 解密请求头
+	decrypt, err := AesDecrypt(decodeString, []byte(a.AekKey))
+	if err != nil {
+		return err
+	}
+
+	// 反序列化
+	err = json.Unmarshal(decrypt, &a)
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
+
+// 编码
+func (a *Aes) Encode() (string, error) {
+
+	// 序列化
+	data, err := json.Marshal(a)
+	if err != nil {
+		return "", err
+	}
+
+	// Aes加密
+	decrypt, err := AesEncrypt(data, []byte(a.AekKey))
+	if err != nil {
+		return "", err
+	}
+
+	return base64.StdEncoding.EncodeToString(decrypt), nil
+
 }
