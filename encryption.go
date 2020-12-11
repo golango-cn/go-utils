@@ -49,18 +49,26 @@ func AesDecrypt(crypted, key []byte) ([]byte, error) {
 }
 
 // 加解密算法
-type Aes struct {
-	AekKey string                 `json:"-"`
-	Value  map[string]interface{} `json:"value"`
+type gaes struct {
+	key   string                 `json:"-"`
+	Value map[string]interface{} `json:"value"`
+}
+
+// 初始化
+func NewGAes(key string) *gaes {
+	return &gaes{
+		key:   key,
+		Value: make(map[string]interface{}),
+	}
 }
 
 // 解码
-func (a *Aes) Decode(data string) error {
+func (a *gaes) Decode(data string) error {
 
 	decodeString, _ := base64.StdEncoding.DecodeString(data)
 
 	// 解密请求头
-	decrypt, err := AesDecrypt(decodeString, []byte(a.AekKey))
+	decrypt, err := AesDecrypt(decodeString, []byte(a.key))
 	if err != nil {
 		return err
 	}
@@ -75,7 +83,7 @@ func (a *Aes) Decode(data string) error {
 }
 
 // 编码
-func (a *Aes) Encode() (string, error) {
+func (a *gaes) Encode() (string, error) {
 
 	// 序列化
 	data, err := json.Marshal(a)
@@ -84,7 +92,7 @@ func (a *Aes) Encode() (string, error) {
 	}
 
 	// Aes加密
-	decrypt, err := AesEncrypt(data, []byte(a.AekKey))
+	decrypt, err := AesEncrypt(data, []byte(a.key))
 	if err != nil {
 		return "", err
 	}
@@ -92,3 +100,4 @@ func (a *Aes) Encode() (string, error) {
 	return base64.StdEncoding.EncodeToString(decrypt), nil
 
 }
+
